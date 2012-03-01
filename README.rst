@@ -1,6 +1,7 @@
 Status page for Varnish
 =======================
 
+
 The idea is to provide a quick summary of the current status of your Varnish
 cache on a HTML page, much like Other Caches[tm], webservers (mod_status) and
 load balancers have.

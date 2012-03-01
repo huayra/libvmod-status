@@ -6,15 +6,17 @@ The idea is to provide a quick summary of the current status of your Varnish
 cache on a HTML page, much like Other Caches[tm], webservers (mod_status) and
 load balancers have.
 
-Planned implementation includes:
+What we have:
+* statusbackend.py runs a HTTPd on port 5912 and serves files in web/. /json is hardcoded in the server and outputs json.
+* web/index.html needs some love.
 
+Overall plans:
 * a backend that exports n samples of the varnishstat counter set via JSON. Map it into your URL-space in VCL. 
 * the backend provide you with some HTML that polls the JSON and show this to the user.
-
 Anyone wishing to roll their own metrics can just poll the JSON for themselves.
 
-Ideas:
-
+Maybees:
 * use socket.io for polling.
 * use highcharts (or flot) to do some simple graphs.
+
 

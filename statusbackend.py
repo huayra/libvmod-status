@@ -50,6 +50,7 @@ class requesthandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 return
             self.send_response(200, "OK")
+            self.send_header("Expires", "Fri, 30 Oct 1998 14:19:41 GMT")
             self.send_header("Content-Type", "text/html")
             self.end_headers()
             self.wfile.write(open(possible_source, "r").read())

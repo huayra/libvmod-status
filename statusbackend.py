@@ -11,8 +11,10 @@ from pprint import pformat
 
 NUMSAMPLES=10
 pollstate = []
+quickaverages = dict() # numbers from the last varnishstat run
 
-def stats():
+def poll():
+    global pollstate, quickaverages
     res = dict()
     # dont assume varnishstat with json support
     lines = os.popen("varnishstat -1").readlines()
@@ -20,19 +22,28 @@ def stats():
         l = line.split()
         # very nasty
         res[l[0]] = l[1]
-    return res
+        if l[2] != ".":
+            quickaverages[l[0]] = l[2]
+    now = datetime.datetime.now()
+    res["generated_iso"] = now.isoformat()
+    res["generated"] = now.strftime("%s")
 
-def poll():
-    global pollstate
-    res = {}
-    res["varnishstat"] = stats()
-    res["generated"] = datetime.datetime.now().isoformat()
-    res["hostname"] = os.uname()[1] # meh
-    #res["responsetimes"] = resptimes() # cheat
     pollstate.insert(0, res)
     if len(pollstate) >= NUMSAMPLES:
         pollstate.pop()
     return True
+
+def getjson():
+    res = dict()
+    now = datetime.datetime.now()
+    res["generated_iso"] = now.isoformat()
+    res["generated"] = now.strftime("%s")
+    res["hostname"] = os.uname()[1]
+    res["numentries"] = len(pollstate) - 1
+    res["s"] = pollstate
+    res["averages"] = quickaverages
+    #res["responsetimes"] = resptimes() # cheat
+    return json.dumps(res, indent=4)
 
 class requesthandler(BaseHTTPRequestHandler):
     # http://docs.python.org/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
@@ -52,7 +63,7 @@ class requesthandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.send_header("Expires", "Fri, 30 Oct 1998 14:19:41 GMT")
             self.end_headers()
-            self.wfile.write(json.dumps(pollstate, indent=4))
+            self.wfile.write(getjson())
         else:
             possible_source = "web/%s" % self.path
             if not os.path.exists(possible_source):

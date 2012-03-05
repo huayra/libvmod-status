@@ -1,295 +1,175 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+Varnish health status page.
+
+Contains traces of code from Pretty automatically updating lighttpd server status by Markus Olsson 
+http://www.freakcode.com/projects/pretty-lighty-status-page
+-->
 <html>
  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Varnish Cache Health Status Page</title>
-    <link href="/css/screen.css" media="screen" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <script language="javascript" type="text/javascript" src="/js/jquery-1.3.2.js"></script>
+    <link href="css/screen.css" media="screen" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script language="javascript" type="text/javascript" src="js/jquery-1.3.2.js"></script>
  </head>
 <body>
-<noscript>
-      &amp;lt;div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: #4075b9; border: 1px solid red; padding: 4px; font-family: sans-serif"&amp;gt;
-        Your web browser must have JavaScript enabled in order for this application to display correctly.
-      &amp;lt;/div&amp;gt;
-</noscript>
-
-<!-- 
-  -- Below is code from 
-  -->
-
-
-    <script type="text/javascript" src="./js/jquery-1.3.2.js"></script>
-    <script type="text/javascript">
-    <!--
-        function BeginPoll()
-        {
-            $.get('/json', null, LoadData);
-        }
-
-        function LoadData(data, textStatus)
-        {
-            if(textStatus == "success")
-            {
-                var d = new Date();
-
-                var elem = document.createElement('div');
-
-                var start = data.indexOf('<h1>');
-                var stop = data.lastIndexOf('</body>');
-
-                elem.innerHTML = data.slice(start, stop);
-                data = null;
-
-                var $e = $(elem);
-                var $sc = $('table.status:first td.string', $e);
-
-                $('#server-name').text(_getServerName($sc[0].textContent));
-
-                $('#uptime').html('up ' + $sc[1].textContent);
-
-                $('#requests-total').html($sc[3].textContent.replace(/\s?([Mk])?req/, '$1').toUpperCase());
-                $('#traffic-total').html(_getTraffic($sc[4].textContent));
-                
-                $('#requests-avg').html(_getRequests($sc[5].textContent));
-                $('#traffic-avg').html(_getTraffic($sc[6].textContent));
-                
-                $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
-                $('#traffic-avg-5s').html(_getTraffic($sc[8].textContent));
-
-                $('#last-update').text('Last updated ' + d.toLocaleTimeString());
-
-                var $crows = $('table.status:last tr', $e);
-                var $ctable = $('#connectionsTable');
-                var $ctbody = $('tbody', $ctable);
-
-                $ctbody.empty();
-
-                $crows.each(function() {
-                    var columns = $('td', this);
-
-                    if(columns.length == 0) return;
-
-                    var $tr = $('<tr>');
-
-                    $tr.append($('<td>').text(columns[0].textContent));
-                    $tr.append($('<td>').text(columns[4].textContent));
-                    $tr.append($('<td>').text(columns[5].textContent));
-                    $tr.append($('<td>').text(_getUri(columns[6].textContent)));
-
-                    $ctbody.append($tr);
-                });
-            }
-            else
-            {
-                alert('failed loading data');
-            }
-
-            setTimeout(BeginPoll, 5 * 1000);
-        }
-
-        function _getServerName(serverString)
-        {
-            return serverString.replace(/ \(\)$/, '');
-        }
-
-        function _getRequests(requestString)
-        {
-            return requestString.replace(/\s*req/, '');
-        }
-        
-        function _getTraffic(trafficString)
-        {
-            var m = trafficString.match(/(\d+)(\.\d+)? ([kMGTPEZY]?) ?byte(\/s)?/);
-
-            if(m == null) return trafficString;
-
-            var integer = m[1];
-            var fraction = m[2];
-            var suffix = m[3];
-
-            var traffic = integer;
-
-            if(suffix.match(/G|T|P|E|Z|Y/) && integer < 100)
-                traffic += fraction;
-            
-            traffic += suffix + "b";
-
-            if(m[4]) traffic += "/s";
-
-            return traffic;
-        }
-
-        function _getUri(uriString)
-        {
-            var m = uriString.match(/^(\/[^ ]+)(?: \((.*)\))?$/);
-
-            if(m != null && m[2] && m[1] == m[2])
-                return m[1];
-
-            return uriString;
-        }
-
-        $(BeginPoll);
-    -->
-    </script>
-
-<!-- 
-  -- Above is code from Pretty automatically updating lighttpd server status by Markus Olsson 
-  -- http://www.freakcode.com/projects/pretty-lighty-status-page
-  -->
-
-<!-- 
-  -- Below is code from Varnish Software ©2012
-  -->
 <script type="text/javascript">
-$(document).ready(function () {
-     $.getJSON("/json", function(jdata) {
-        alert("hostname of polled server is" + jdata.uname[1]);
-         $("#status").text(jdata)
-     })
-});
+    function BeginPoll() {
+         $.getJSON("/json", null, LoadData);
+    }
+
+    function LoadData(data, textStatus) {
+        if(textStatus == "success") {
+            
+            var curr = data["s"][0];
+            var numentries = data["numentries"];
+            var old = data["s"][numentries];
+            var timediff = curr["generated"] - old["generated"];
+
+            $('#server-name').text(data["hostname"]);
+            $('#uptime').text('worker child up ' + curr["uptime"] + " seconds"); //  + " or " + old["uptime"][0]);
+
+            // $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
+            var avgreq   = (curr["client_req"] - old["client_req"]) / timediff;
+            $('#requests-avg').html(avgreq.toFixed(1) + " [/sec]"); // _getRequests($sc[5].textContent));
+            $('#requests-total').html(curr["client_req"]);
+            $('#traffic-total').html(curr["s_bodybytes"] + " bytes" );
+            var avgbytes = (curr["s_bodybytes"] - old["s_bodybytes"]) / timediff;
+            $('#traffic-avg').html(avgbytes.toFixed(1) + " [byte/s]");
+            //$('#requests-total').html($sc[3].textContent.replace(/\s?([Mk])?req/, '$1').toUpperCase());
+/*
+            $('#traffic-total').html(_getTraffic($sc[4].textContent));
+            $('#traffic-avg-5s').html(_getTraffic($sc[8].textContent));
+*/
+            $('#last-update').text('Last updated ' + data["generated_iso"]);
+        }
+        else
+        {
+            alert('Failed loading data');
+        }
+        setTimeout(BeginPoll, 5 * 1000);
+    }
+
+    function _getServerName(serverString) {
+        return serverString.replace(/ \(\)$/, '');
+    }
+
+    function _getRequests(requestString) {
+        return requestString.replace(/\s*req/, '');
+    }
+    
+    function _getTraffic(trafficString) {
+        var m = trafficString.match(/(\d+)(\.\d+)? ([kMGTPEZY]?) ?byte(\/s)?/);
+
+        if(m == null) return trafficString;
+
+        var integer = m[1];
+        var fraction = m[2];
+        var suffix = m[3];
+
+        var traffic = integer;
+
+        if(suffix.match(/G|T|P|E|Z|Y/) && integer < 100)
+            traffic += fraction;
+        
+        traffic += suffix + "b";
+
+        if(m[4]) traffic += "/s";
+
+        return traffic;
+    }
+
+    function _getUri(uriString) {
+        var m = uriString.match(/^(\/[^ ]+)(?: \((.*)\))?$/);
+
+        if(m != null && m[2] && m[1] == m[2])
+            return m[1];
+
+        return uriString;
+    }
+
+    $(BeginPoll);
+-->
 </script>
 
-</head>
+<div id="topheadwrapper">
+<div id="logobox"><img src="images/vac_logo.png"></div> 
+<div id="slogan">Varnish Health</div> 
+<div id="topheadcontainer">
+<div id="navigation">
+    <div id="navbar">
+    <ul class="nav">
+        <li><a class="">Status</a></li>
+        <li> <a class="">About</a></li>
+    </ul>
+    </div>
+</div> 
+</div>
+</div>
 
-<body>
-
-<div id="topheadwrapper"> <div id="logobox"> <img src="./images/vac_logo.png"> </div> <div id="slogan">Varnish Health</div> <div id="topheadcontainer"> <div id="navigation"> <div id="navbar"> <ul class="nav"> <li> <a class="">Status</a> </li> <li> <a class="">About</a> </li> </ul>  </div> </div> <div class="float:left" id="user_toolbar"> <span class="signedin"> <span>Online</span> </span> <a class="signout">Some text here as well</a> </div> </div> </div>
-
-<!-- 
-  -- Above is code from Varnish Software ©2012
-  -->
-
-<!-- 
-  -- Below is code from Pretty automatically updating lighttpd server status by Markus Olsson 
-  -- http://www.freakcode.com/projects/pretty-lighty-status-page
-  -->
-
-
-    <div id="wrapper">
-
-        <div id="header" class="section">
-            <h1 id="docTitle">Server status</h1>
-            <div id="last-update"></div>
-            <div id="server-name">unknown</div>
-            <div id="uptime"></div>
-        </div>
-
-        <div id="stats" class="section">
-
-            <h2>Connection statistics</h2>
-
-            <div class="innerSection">
-                <h3>5s sliding average</h3>
-                <div class="contents">
-                
-                    <div class="valueContainer">
-                        <h4>Requests</h4>
-                        <div id="requests-avg-5s"></div>
-                    </div>
-
-                    <div class="valueContainer">
-                        <h4>Traffic</h4>
-                        <div id="traffic-avg-5s"></div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="innerSection">
-                <h3>average</h3>
-
-                <div class="contents">
-                    <div class="valueContainer">
-                        <h4>Requests</h4>
-                        <div id="requests-avg"></div>
-                    </div>
-
-                    <div class="valueContainer">
-                        <h4>Traffic</h4>
-                        <div id="traffic-avg"></div>
-                    </div>
-
-                </div>
-            </div>
- 
-            <div class="innerSection">
-                <h3>total</h3>
-                <div class="contents">
-                    <div class="valueContainer">
-                        <h4>Requests</h4>
-                        <div id="requests-total"></div>
-                    </div>
-
-                    <div class="valueContainer">
-                        <h4>Traffic</h4>
-                        <div id="traffic-total"></div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="clearfix"></div>
-
-        </div>
-
-        <div id="connections" class="section">
-            <h2>Connections</h2>
-
-            <table id="connectionsTable">
-                <thead>
-                <tr>
-                    <th>Client</th>
-                    <th>Time</th>
-                    <th>Host</th>
-                    <th>URI</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-
-        </div>
-
+<div id="wrapper">
+    <div id="header" class="section">
+        <h1 id="docTitle">Server status</h1>
+        <div id="last-update"></div>
+        <div id="server-name">unknown server name</div>
+        <div id="uptime">uptime not set</div>
     </div>
 
+    <div id="stats" class="section">
+        <h2>Connection statistics</h2>
+        <div class="innerSection">
+            <h3>5s sliding average</h3>
+            <div class="contents">
+                <div class="valueContainer">
+                   <h4>Requests</h4>
+                    <div id="requests-avg-5s"></div>
+                </div>
+                <div class="valueContainer">
+                    <h4>Traffic</h4>
+                    <div id="traffic-avg-5s"></div>
+                </div>
+            </div>
+        </div>
 
-<!-- 
-  -- Above is code from Pretty automatically updating lighttpd server status by Markus Olsson 
-  -- http://www.freakcode.com/projects/pretty-lighty-status-page
-  -->
+        <div class="innerSection">
+            <h3>average</h3>
 
+            <div class="contents">
+                <div class="valueContainer">
+                    <h4>Requests</h4>
+                    <div id="requests-avg"></div>
+                </div>
+                <div class="valueContainer">
+                    <h4>Traffic</h4>
+                    <div id="traffic-avg"></div>
+                </div>
+            </div>
+        </div>
 
-<!-- 
-  -- Lasse & Rubén hacks below
-  -->
+        <div class="innerSection">
+            <h3>total</h3>
+            <div class="contents">
+                <div class="valueContainer">
+                    <h4>Requests</h4>
+                    <div id="requests-total"></div>
+                </div>
 
+                <div class="valueContainer">
+                    <h4>Traffic</h4>
+                    <div id="traffic-total"></div>
+                </div>
 
-<p>Things that we can have access to:</p>
-<h2> Munin </h2>
-<p>What Munin shows:</p>
-<ul> <li> Munin </li> <li> <a href="https://munin.varnish-software.com/varnish-software.com/angela.varnish-software.com/index.html#varnish">Example</a></li> <li>  <a href="http://munin-monitoring.org/browser/trunk/plugins/node.d/varnish_.in">code</a></li> </ul>
+            </div>
+        </div>
 
+        <div class="clearfix"></div>
 
-<h1>(v)mod_status</h1>
-<p>Current values:</p>
-<div>(unset)</div>
+    </div>
+</div>
 
-
-<!-- 
-  -- Lasse & Rubén hacks above
-  -->
-
-<!-- 
-  -- Below is code from Varnish Software ©2012
-  -->
-
-<div class="footerDiv"> <div class="span24" id="footer"> © Varnish Software <span> - VMOD Status</span> </div> </div>
-
-<!-- 
-  -- Above is code from Varnish Software ©2012
-  -->
+<div class="footerDiv footer">
+© Varnish Software - VMOD Status | <a href="/json">json source data</a></div>
 
 </body>
 </html>

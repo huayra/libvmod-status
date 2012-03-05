@@ -24,135 +24,131 @@ time, mark, audio, video {
    License: MIT
 */
 
-        #wrapper {
-            background: black;
-            width: 900px;
-            margin: 0 auto;
-            margin-bottom: 10px;
-        }
+#wrapper {
+    background: black;
+    width: 900px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
 
-        #header {
-            position: relative;
-        }
+#header {
+    position: relative;
+}
 
-        #header h1,
-        .section h2,
-        .section h3 {
-            margin: 0;
-            padding: 0;
-            color: #162d50;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+#header h1,
+.section h2,
+.section h3 {
+    margin: 0;
+    padding: 0;
+    color: #162d50;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
 
-        #header h1{
-            border-bottom: solid 1px #eee;
-        }
+#header h1 {
+    border-bottom: solid 1px #eee;
+}
 
-        #stats h2 {
-            //margin-bottom: 10px;
-        }
+#last-update { 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: bold;
+}
 
-        #last-update { 
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 10px;
-            font-weight: bold;
-        }
+#server-name {
+    font-weight: bold;
+    font-size: 20px;
+}
 
-        #server-name {
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .section {
-            background: white;
-            top: 10px;
-            // margin: 10px
-            // margin-bottom: 15px;
-            padding: 20px;
-            -moz-border-radius: 5px;
-            -webkit-border-radius: 5px;
-        }
+.section {
+    background: white;
+    top: 10px;
+    /* margin: 10px
+    // margin-bottom: 15px; */
+    padding: 20px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
 
 
-        .innerSection {
-            float: left;
-        }
+.innerSection {
+    float: left;
+}
 
-        .clearfix { clear: both; }
+.clearfix { clear: both; }
 
-        .valueContainer h4 {
-            font-size: 12px;
-            margin: 0;
-            padding: 0;
-        }
+.valueContainer h4 {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
 
-        .valueContainer {
-            text-align: center;
-            background: #f2f2f2;
-            padding: 10px;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            float: left;
-            margin-right: 10px;
-            width: 100px;
-        }
+.valueContainer {
+    text-align: center;
+    background: #f2f2f2;
+    padding: 10px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    float: left;
+    margin-right: 10px;
+    width: 100px;
+}
 
-        .valueContainer div {
-            font-size: 26px;
-            font-weight: bold;
-        }
+.valueContainer div {
+    font-size: 26px;
+    font-weight: bold;
+}
 
-        #connectionsTable {
-            width: 100%;
-            font-family: verdana, arial, helvetica, sans-serif;
-            font-size: x-small;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+#connectionsTable {
+    width: 100%;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: x-small;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
 
-        #connectionsTable tr th {
-            background-color: #003366;
-            color: #ffffff;
-            font-weight: bold;
-            text-align: left;
-            padding: 0.5em;
-            border-left: 1px dotted #cccccc;
-            margin: 0;
-        }
+#connectionsTable tr th {
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: left;
+    padding: 0.5em;
+    border-left: 1px dotted #cccccc;
+    margin: 0;
+}
 
-        #connectionsTable th:first-child {
-            border-left: 0;
-        }
+#connectionsTable th:first-child {
+    border-left: 0;
+}
 
-        #connectionsTable tr th:hover {
-            background-color: #2d5e92;
-        }
+#connectionsTable tr th:hover {
+    background-color: #2d5e92;
+}
 
-        // Table cells: general
+// Table cells: general
 
-        #connectionsTable td:first-child {
-            border-left: 0;
-        }
+#connectionsTable td:first-child {
+    border-left: 0;
+}
 
-        #connectionsTable tr td {
-            padding: 0.5em;
-            border-left: 1px dotted #cccccc;
-            margin: 0;
-        }
+#connectionsTable tr td {
+    padding: 0.5em;
+    border-left: 1px dotted #cccccc;
+    margin: 0;
+}
 
-        // Optional alternating colours
+// Optional alternating colours
 
-        #connectionsTableEven td {
-            background-color: #fff;
-        }
+#connectionsTableEven td {
+    background-color: #fff;
+}
 
-        #connectionsTableOdd td {
-            background-color: #eeeeee;
-        }
+#connectionsTableOdd td {
+    background-color: #eeeeee;
+}
 
 	
 /* HTML5 display-role reset for older browsers */
@@ -180,19 +176,17 @@ table {
 }
 
 /* Basic layout */
-
 html,body {
 	height: 100%;
-	// background: #FAFAFA;
+	/* background: #FAFAFA; */
 }
 
 #outer {
 	min-height: 100%;
 }
 
-
 #mainarea {
-	// background: none repeat scroll 0 0 #FAFAFA;
+	/* background: none repeat scroll 0 0 #FAFAFA; */
 	overflow: auto;
 	padding-bottom: 19px;
 }
@@ -257,301 +251,6 @@ h6 {
 	width: 100%;
 	margin: 0 auto;
 	overflow: hidden;
-}
-
-.span1 {
-	width: 4%;
-}
-
-.span2 {
-	width: 8%;
-}
-
-.span3 {
-	width: 12%;
-}
-
-.span4 {
-	width: 16%;
-}
-
-.span5 {
-	width: 20%;
-}
-
-.span6 {
-	width: 25%;
-}
-
-.span7 {
-	width: 29%;
-}
-
-.span8 {
-	width: 33%;
-}
-
-.span9 {
-	width: 37%;
-}
-
-.span10 {
-	width: 41%;
-}
-
-.span11 {
-	width: 45%;
-}
-
-.span12 {
-	width: 50%;
-}
-
-.span13 {
-	width: 54%;
-}
-
-.span14 {
-	width: 58%;
-}
-
-.span15 {
-	width: 62%;
-}
-
-.span16 {
-	width: 66%;
-}
-
-.span17 {
-	width: 70%;
-}
-
-.span18 {
-	width: 75%;
-}
-
-.span19 {
-	width: 79%;
-}
-
-.span20 {
-	width: 83%;
-}
-
-.span21 {
-	width: 87%;
-}
-
-.span22 {
-	width: 91%;
-}
-
-.span23 {
-	width: 95%;
-}
-
-.span24 {
-	width: 100%;
-}
-
-.static-span1 {
-	width: 30px;
-}
-
-.static-span2 {
-	width: 70px;
-}
-
-.static-span3 {
-	width: 110px;
-}
-
-.static-span4 {
-	width: 150px;
-}
-
-.static-span5 {
-	width: 190px;
-}
-
-.static-span6 {
-	width: 230px;
-}
-
-.static-span7 {
-	width: 270px;
-}
-
-.static-span8 {
-	width: 310px;
-}
-
-.static-span9 {
-	width: 350px;
-}
-
-.static-span10 {
-	width: 390px;
-}
-
-.static-span11 {
-	width: 430px;
-}
-
-.static-span12 {
-	width: 470px;
-}
-
-.static-span13 {
-	width: 510px;
-}
-
-.static-span14 {
-	width: 550px;
-}
-
-.static-span15 {
-	width: 590px;
-}
-
-.static-span16 {
-	width: 630px;
-}
-
-.static-span17 {
-	width: 670px;
-}
-
-.static-span18 {
-	width: 710px;
-}
-
-.static-span19 {
-	width: 750px;
-}
-
-.static-span20 {
-	width: 790px;
-}
-
-.static-span21 {
-	width: 830px;
-}
-
-.static-span22 {
-	width: 870px;
-}
-
-.static-span23 {
-	width: 910px;
-}
-
-.input-span1 {
-	width: 4%;
-}
-
-.input-span2 {
-	width: 8%;
-}
-
-.input-span3 {
-	width: 12%;
-}
-
-.input-span4 {
-	width: 16%;
-}
-
-.input-span5 {
-	width: 20%;
-}
-
-.input-span6 {
-	width: 25%;
-}
-
-.input-span7 {
-	width: 29%;
-}
-
-.input-span8 {
-	width: 33%;
-}
-
-.input-span9 {
-	width: 37%;
-}
-
-.input-span10 {
-	width: 41%;
-}
-
-.input-span11 {
-	width: 45%;
-}
-
-.input-span12 {
-	width: 50%;
-}
-
-.input-span13 {
-	width: 54%;
-}
-
-.input-span14 {
-	width: 58%;
-}
-
-.input-span15 {
-	width: 62%;
-}
-
-.input-span16 {
-	width: 66%;
-}
-
-.input-span17 {
-	width: 70%;
-}
-
-.input-span18 {
-	width: 75%;
-}
-
-.input-span19 {
-	width: 79%;
-}
-
-.input-span20 {
-	width: 83%;
-}
-
-.input-span21 {
-	width: 87%;
-}
-
-.input-span22 {
-	width: 91%;
-}
-
-.input-span23 {
-	width: 95%;
-}
-
-.input-span24 {
-	width: 100%;
-}
-
-.actionButton-bottom {
-	padding-top: 20px;
-}
-
-/*Graph DialogBox */
-
-.glassBackground {
-	color:#000000;
-	opacity:0.4;
 }
 
 .fullScreenDialogBox {
@@ -640,179 +339,6 @@ div.dialogTopCenterInner table.dialogCaption{ border-collapse:separate;}
 	margin: 0.2em;
 	background: #FFE15C;
 	color: #000;
-}
-
-.dashboardGroup {
-	minwidth: 120px;
-}
-
-.overview_group_name {
-	font-size: 20px;
-	color: #8c8c8c;
-	padding-bottom: 6px;
-}
-
-.overview_hitometer_hitrate {
-	font-size: 34px;
-	font-weight: bold;
-	color: #656565;
-	padding-bottom: 6px;
-}
-
-.hitometerAverageOutlookValue {
-	font-weight: bold;
-	padding-top: 5px;
-}
-
-.group_overview {
-	padding: 0 0 0 281px;
-    width: 100%;
-    background-color :#202630;
-}
-
-.group_overview_padding {
-	padding: 0px 0px 0px 114px;
-	background-color: #202630;
-}
-
-.group_health {
-	background-color: #202630;
-   	float: left;
-    height: 100px;
-    width: 114px;
-}
-
-.rounded_border {
-	border: 2px solid #ccc;
-  	-moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -khtml-border-radius: 2px;
-    border-radius: 2px;
-    height: 100px;
-    background-color: #202630;
-    padding: 5px 0px 5px 0px;
-}
-
-.group_health img {
-    padding-left: 40px;
-    padding-right: 10px;
-    padding-top: 30px
-}
-
-.group_health_status {
-	color: #FFFFFF;
-	font-weight: bold;
-    padding-left: 30px;
-    padding-top: 5px;
-}
-
-.group_ok {
-	background: url('common/images/green_circle.png') 0 0 no-repeat; 
-}
-
-.outlook_graph_left {
-	width: 50%;
-	float:left;
-	background-color: #202630;
-}
-
-.outlook_graph_right {
-	width: 50%;
-	float: right;
-	background-color: #202630;
-}
-
-.outlook {
-	width: 114px; 
-	float: left;
-	border-left: 1px solid #000;
-}
-
-.outlook_value {
-	display: table-cell;
-	vertical-align: middle;
-    width: 114px; /* Width: 100% doesn't work for table-cell and vertical-align doesn't work for block element :-( */
-    height: 45px;
-    background-color: #202630;
-    color: #FFFFFF;
-    font-family: Consolas,Monaco,sans-serif;
-    font-size: 30px;
-    font-weight: bold;
-    text-align: center;
-    border-left: 1px solid #354050;
-}
-
-.outlook_text_label {
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-    height: 15px;
-    background-color: #202630;
-    border-left: 1px solid #354050;
-	padding-bottom: 10px;
-}
-
-.outlook_text_unit {
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-    height: 15px;
-    background-color: #202630;
-    border-left: 1px solid #354050;
-	padding-top: 15px;
-}
-
-.overviewMaster {
-	padding: 15px 30px 5px 30px;
-}
-
-.overviewHitoMeter {
-	width: 231px;
-	float: left;
-	border-right: #ccc solid 1px;
-}
-
-.overviewHitMiss {
-	height: 200px; 
-	padding-left:244px;
-}
-
-.overviewHorizontalSeparator {
-	clear: both; 
-	border: #ccc solid 1px;
-	margin-top: 10px;
-}
-
-.overviewGraphDiv {
-	width: 100%;
-}
-
-.hitometerTitle {
-	font-size: 120%;
-	color: #666;
-	padding: 0px 0px 5px 0px;
-}
-
-.lowercase-font {
-	text-transform: lowercase;
-}
-
-.unaltered-font {
-	text-transform: none;
-}
-
-div.dashBoardGroupDiv {align: center;}
-div.dashBoardGroupDiv label {color: #666; display: inline; margin-right: 3px;}
-
-/* Sets margin between grid */
-.span-1>div,.span-2>div,.span-3>div,.span-4>div,.span-5>div,.span-6>div,.span-7>div,.span-8>div,.span-9>div,.span-10>div,.span-11>div,.span-12>div,.span-13>div,.span-14>div,.span-15>div,.span-16>div,.span-17>div,.span-18>div,.span-19>div,.span-20>div,.span-21>div,.span-22>div,.span-23>div,.span-24>div
-	{
-	margin: 0 .833em 0 0;
-	overflow: hidden;
 }
 
 /* Common */
@@ -953,90 +479,18 @@ hr {
 	margin: 0 0 0 0.1em;
 }
 
-// .palette {
-// 	border: 1px solid #ccc;
-// 	-webkit-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 3px 3px;
-// } /* Only webkit is set, we can use FF to see how it fallbacks */
-
 .palette_header {
-	// background: #FEFEFE;
+	/* background: #FEFEFE; */
 	height: 28px;
 	text-transform: uppercase;
 	padding: 8px 0px 8px 10px;
 }
 
-.palette_header .user {
-	background: url('../images/icn_sprites.png') 0 0 repeat-y;
-}
-
-.palette_header .group {
-	background: url('../images/icn_sprites.png') 0 -16px repeat-y;
-}
-
-.palette_header .config {
-	background: url('../images/icn_sprites.png') 0 -32px repeat-y;
-}
-
-.palette_header .ban {
-	background: url('../images/icn_sprites.png') 0 -272px repeat-y;
-}
-
-.palette_header .network {
-	background: url('../images/icn_sprites.png') 0 -48px repeat-y;
-}
-
-.palette_header .threads {
-	background: url('../images/icn_sprites.png') 0 -64px repeat-y;
-}
-
-.palette_header .debug {
-	background: url('../images/icn_sprites.png') 0 -80px repeat-y;
-}
-
-.palette_header .sessions {
-	background: url('../images/icn_sprites.png') 0 -96px repeat-y;
-}
-
-.palette_header .acceptors {
-	background: url('../images/icn_sprites.png') 0 -112px repeat-y;
-}
-
-.palette_header .system {
-	background: url('../images/icn_sprites.png') 0 -128px repeat-y;
-}
-
-.palette_header .timers {
-	background: url('../images/icn_sprites.png') 0 -144px repeat-y;
-}
-
-.palette_header .others {
-	background: url('../images/icn_sprites.png') 0 -160px repeat-y;
-}
-
-.palette_header .esi {
-	background: url('../images/icn_sprites.png') 0 -176px repeat-y;
-}
-
-.palette_header .http {
-	background: url('../images/icn_sprites.png') 0 -192px repeat-y;
-}
-
-.palette_header .dashboard {
-	background: url('../images/icn_sprites.png') 0 -208px repeat-y;
-}
-
-.palette_header .cli {
-	background: url('../images/icn_sprites.png') 0 -224px repeat-y;
-}
-
-.palette_header .varnish {
-	background: url('../images/icn_sprites.png') 0 -240px repeat-y;
-}
 
 .palette_header .user, .palette_header .group, .palette_header .config, .palette_header .ban, .palette_header .network, .palette_header .threads, .palette_header .debug, .palette_header .sessions, .palette_header .acceptors, .palette_header .system, .palette_header .timers, .palette_header .others, .palette_header .esi, .palette_header .http, .palette_header .dashboard, .palette_header .cli, .palette_header .messages, .palette_header .support, .palette_header .license {height: 16px; width: 16px; float:left; padding: 0 0.5em 0 0.5em; margin: 0 0 0 0.5em;}
 
 .palette {
-	// border: 10px solid #ccc;
+	/* border: 10px solid #ccc; */
 	padding: 0,0.3em; 
 	/* -webkit-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 3px 3px; 
 	// -moz-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 3px 3px; 
@@ -1051,29 +505,8 @@ hr {
 	text-transform: uppercase; 
 	font-size: 1.1em;
 	border-top: 1px; 
-	// color: #555; 
-	// padding: 5px;
-}
-/*.palette_header {background: #E5E5E5 url('../images/palette_header.gif') repeat-x; border-bottom: 1px solid #ccc; text-transform: uppercase; font-size: 1.1em; color: #555; padding: 0.5em; margin-top: 1px}*/
-.palette_header .user {background: url('../images/icn_sprites.png') 0 0 repeat-y;}
-.palette_header .group {background: url('../images/icn_sprites.png') 0 -16px repeat-y;}
-.palette_header .config {background: url('../images/icn_sprites.png') 0 -32px repeat-y;}
-.palette_header .ban {background: url('../images/icn_sprites.png') 0 -272px repeat-y;}
-
-.palette_header .messages {
-	background: url('../images/icn_sprites.png') 0 -256px repeat-y;
-}
-
-/* .palette_header .support {
-// 	background: url('../images/icn_sprites.png') 0 -288px repeat-y;
-*/ }
-
-.palette_header .license {
-	background: url('../images/icn_sprites.png') 0 -304px repeat-y;
-}
-
-.palette_header p {
-	margin: 1px 0;
+	/* color: #555; 
+	// padding: 5px; */
 }
 
 
@@ -1333,22 +766,18 @@ div.results label {color: #666; display: inline; margin-right: 3px;}
 	background: #EFFFD0;
 }
 
-.parameter_form .inactive {
-		
-} /* Inactives should be disabled in the UI, viewable, non editable */
-
 .parameter_extrapadding {
 	padding-top: 5px;
 }
 
-/* CLI  */
-#cli_wrapper {
+/* #cliwrapper {
 	background: #222; margin 1%;
 	width: 98%;
 	height: 100%;
 	padding: 1%;
 }
 
+*/
 #cli input:focus {outline: none;}
 
 #cli_wrapper p {
@@ -1430,8 +859,8 @@ div.results label {color: #666; display: inline; margin-right: 3px;}
 	width: 100%;
 }
 .halfScreen {
-	height:300px;
-	width:50%;
+	height: 300px;
+	width: 50%;
 }
 
 #vcl_wrapper_left {
@@ -2354,5 +1783,4 @@ button.small {
 .footerDiv {
 	padding: 0em 1em;
 }
-
 

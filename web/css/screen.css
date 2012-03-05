@@ -798,10 +798,6 @@ div.results label {color: #666; display: inline; margin-right: 3px;}
 	text-transform: uppercase;
 }
 
-#cli_toolbar ul .icon_info {
-	
-}
-
 .cliContainer {
 	background: #222; 			
 	padding: 1%;
@@ -815,10 +811,6 @@ div.results label {color: #666; display: inline; margin-right: 3px;}
 .cliContainer p {
 	font-family: Consolas, Monaco, monospace;
 	color: #fff;
-}
-		
-.cliCommand {
-	
 }
 		
 .cliPrompt {
@@ -848,63 +840,6 @@ div.results label {color: #666; display: inline; margin-right: 3px;}
 	margin-top: 0px;	
 	padding-left: 0px;								
 	background: #222;
-}
-
-/* VCL Editor */
-
-.horizontalSplitPanel {
-	background-color:#FFFFFF;
-	border: 1px;
-	height: 300px;
-	width: 100%;
-}
-.halfScreen {
-	height: 300px;
-	width: 50%;
-}
-
-#vcl_wrapper_left {
-	float: left;
-    font-size: 0.9em;
-	margin 1%;
-	width: 100%;
-	height: 100%;
-}
-
-#vcl_div_right_border {
-	float: left;
-	valign: middle;
-	height: 28px;
-	border-right: 1px solid #bbb;
-	padding-right: 20px;
-}
-
-.vcl_editor_heading_icon {
-	float: left;
-	background: url('/images/16/vcl-editor-icon.png')  0 0 no-repeat;
-    background-position: left;
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-}
-
-#vcl_div_plain_box {
-	float:left; 
-	width:220px; 
-	height: 100%;
-	padding-left:10px;
-	padding-right: 10px;
-}
-
-#vcl_div_plain_box .snippetName {
-	width: auto;
-	padding-left: 5px;
-	padding-right: 5px;
-	vertical-align: middle;
-	display: table-cell;
-	height: 28px;
-	border: 1px solid #ccc;
-	text-align:inherit;
 }
 
 #vcl_new_anchor_div {
@@ -1523,17 +1458,6 @@ font-weight:bold;
 	float: left;
 }
 
-/* Webkit animation keyframes */
-@
--webkit-keyframes animate-stripes {from { background-position:00;
-	
-}
-
-to {
-	background-position: 44px 0;
-}
-
-}
 .progress_bar_inner {
 	position: relative;
 	display: block;
@@ -1598,17 +1522,17 @@ to {
 a {
 	cursor:pointer;
 }
+
 div.palette_header p div {
-	// background: #222;
 	float:right;
 	font-size:1em;
 	color: #fff;
 	font-weight:bold;
 	cursor:pointer;
 	border:1px solid #ccc;
-	// padding: 5px 7px 5px 7px;
+	/* padding: 5px 7px 5px 7px;
 	// border-radius: 12px;
-	// -moz-border-radius: 12px;	
+	// -moz-border-radius: 12px;	 */
 	margin-top: -1px;
 }
 

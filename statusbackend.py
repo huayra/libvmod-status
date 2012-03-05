@@ -51,7 +51,14 @@ class requesthandler(BaseHTTPRequestHandler):
                 return
             self.send_response(200, "OK")
             self.send_header("Expires", "Fri, 30 Oct 1998 14:19:41 GMT")
-            self.send_header("Content-Type", "text/html")
+
+            # made by the dirty hacks department.
+            content_type = "text/html"
+            if possible_source.endswith(".css"): content_type = "text/css"
+            elif possible_source.endswith(".js"): content_type = "application/javascript"
+            elif possible_source.endswith(".png"): content_type = "image/png"
+
+            self.send_header("Content-Type", content_type)
             self.end_headers()
             self.wfile.write(open(possible_source, "r").read())
 

@@ -5,9 +5,12 @@
 #
 # Author: Lasse Karstensen <lasse.karstensen@gmail.com>
 
-import datetime, json, os, base64, random
+import datetime, json, os, base64, random, time, select
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from pprint import pformat
+
+NUMSAMPLES=10
+pollstate = []
 
 def stats():
     res = dict()
@@ -18,6 +21,18 @@ def stats():
         # very nasty
         res[l[0]] = l[1]
     return res
+
+def poll():
+    global pollstate
+    res = {}
+    res["varnishstat"] = stats()
+    res["generated"] = datetime.datetime.now().isoformat()
+    res["hostname"] = os.uname()[1] # meh
+    #res["responsetimes"] = resptimes() # cheat
+    pollstate.insert(0, res)
+    if len(pollstate) >= NUMSAMPLES:
+        pollstate.pop()
+    return True
 
 class requesthandler(BaseHTTPRequestHandler):
     # http://docs.python.org/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
@@ -37,12 +52,7 @@ class requesthandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.send_header("Expires", "Fri, 30 Oct 1998 14:19:41 GMT")
             self.end_headers()
-            res = {}
-            res["varnishstat"] = stats()
-            res["generated"] = datetime.datetime.now().isoformat()
-            #res["uname"] = os.uname()
-            res["responsetimes"] = resptimes() # cheat
-            self.wfile.write(json.dumps(res, indent=4))
+            self.wfile.write(json.dumps(pollstate, indent=4))
         else:
             possible_source = "web/%s" % self.path
             if not os.path.exists(possible_source):
@@ -87,7 +97,22 @@ def hist():
 def main():
     server_address = ('', 5912)
     httpd = HTTPServer(server_address, requesthandler)
-    httpd.serve_forever()
+
+    pollobj = select.poll()
+    pollobj.register(httpd.fileno())
+
+    # yes yes, it will not answer http requests when polling. sufficient for our use.
+    lastpoll = 0.0
+    while True:
+       pollres = pollobj.poll(0)
+       if len(pollres) > 0:
+           httpd.handle_request()
+
+       now = time.time()
+       if now > (lastpoll + 2):
+           lastpoll = now
+           poll()
+       time.sleep(0.1)
 
 if __name__ == "__main__":
     main()

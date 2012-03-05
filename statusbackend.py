@@ -40,7 +40,7 @@ class requesthandler(BaseHTTPRequestHandler):
             res = {}
             res["varnishstat"] = stats()
             res["generated"] = datetime.datetime.now().isoformat()
-            res["uname"] = os.uname()
+            #res["uname"] = os.uname()
             res["responsetimes"] = resptimes() # cheat
             self.wfile.write(json.dumps(res, indent=4))
         else:

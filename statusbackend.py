@@ -6,6 +6,12 @@
 # Author: Lasse Karstensen <lasse.karstensen@gmail.com>
 
 import datetime, json, os, base64, random, time, select
+try:
+    import json
+    raise "foo"
+except:
+    import simplejson as json
+
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from pprint import pformat
 
@@ -106,7 +112,7 @@ def hist():
                 break
 
 def main():
-    server_address = ('', 5912)
+    server_address = ('0.0.0.0', 5912)
     httpd = HTTPServer(server_address, requesthandler)
 
     pollobj = select.poll()

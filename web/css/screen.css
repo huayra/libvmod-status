@@ -228,31 +228,6 @@ h3 {
 	margin-bottom: 1em;
 }
 
-h4 {
-	font-size: 1.2em;
-	line-height: 1.25;
-	margin-bottom: 1.25em;
-}
-
-h5 {
-	font-size: 1em;
-	font-weight: bold;
-	margin-bottom: 1.5em;
-}
-
-h6 {
-	font-size: 1em;
-	font-weight: bold;
-}
-
-/* Grid layout */
-.container {
-	min-width: 950px;
-	width: 100%;
-	margin: 0 auto;
-	overflow: hidden;
-}
-
 .fullScreenDialogBox {
     background-color: #FFFFFF;
     border-bottom: 3px solid #000099;
@@ -266,70 +241,7 @@ h6 {
     z-index:1000;
     border: 1px solid #ccc; -webkit-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 3px 3px; -moz-box-shadow: rgba(0, 0, 0, 0.0976562) 0px 3px 3px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; background: #fff;
 }
-
-.overlay {
-     visibility: hidden;
-     position: fixed;
-     left: 0px;
-     top: 0px;
-     width:100%;
-     height:100%;
-     text-align:center;
-     z-index: 1000;
-     background: rgba(0,0,0,0.8); /*We use RGBA for modern browsers */
-}
-
-td.dialogTopCenter {padding:0px !important;}
-tr.dialogMiddle {border: 2px #E5E5E5 solid;}
-/* tr.dialogTop {border: 2px #E5E5E5 solid;} */
-.dialogTopCenterInner {margin-top:1px;border-bottom:1px solid #CCCCCC;}
-.dialogTopLeftInner{background:url("../images/palette_header.gif") repeat-x scroll 0 0 #E5E5E5;margin-top:1px; width:1px; height:26px;border-bottom:1px solid #CCCCCC;}
-td.dialogTopLeft{padding:0px;}
-div.dialogTopCenterInner table.dialogCaption{ border-collapse:separate;}
-.panelBackGround {
-	background-color: #FFFFFF;
 	
-}
-
-.gwt-DialogBox .Caption { 
-	background: url('../images/icn_sprites.png') 0 0 repeat-y;
-	}
-
-.dialogCaption {
-	width:100%;
-	background: #E5E5E5 url('../images/palette_header.gif') repeat-x; 
-	border-bottom: 0px solid #ccc; 
-	text-transform: uppercase;
-	font-size: 1.1em; color: #555; padding: 0.0em; margin: 0px !important;
-	/* -moz-border-radius: 4px 4px 4px 4px; */
-}
-
-.dialogTopCenterInner table tbody tr td {
-    border-bottom-width: 0;
-    padding-bottom: 0;
-    padding-top: 0;
-    vertical-align: top;
-}
-
-
-.fullScreenDialogBox div table {
-	margin : 0px;
-}
-
-.dialogTopWidth {
-	height : 10px;
-}
-
-.dialogCloseButton {
-	color : #000000;
-	float : right;
-	cursor: pointer;
-	font-size : 200%;
-	background: #fff;
-	border: 1px solid #fff;
-	border-radius: 10px;
-	
-}
 
 .dashGroupMsgContainer {
 	width: 200px;
@@ -347,17 +259,6 @@ a {
 	text-decoration: none;
 }
 
-a:hover {
-	text-decoration: underline;
-}
-
-.inactive {
-	color: #666;
-}
-
-hr {
-	width: 100%;
-}
 
 dl,ol,ul {
 	padding: 1em 0 1em 0;

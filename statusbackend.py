@@ -6,10 +6,10 @@
 # Author: Lasse Karstensen <lasse.karstensen@gmail.com>
 
 import datetime, json, os, base64, random, time, select
+# try to support Python 2.5.
 try:
     import json
-    raise "foo"
-except:
+except ImportError:
     import simplejson as json
 
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler

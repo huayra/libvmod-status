@@ -32,16 +32,29 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 
             // $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
             var avgreq   = (curr["client_req"] - old["client_req"]) / timediff;
-            $('#requests-avg').html(avgreq.toFixed(1) + " [/sec]"); // _getRequests($sc[5].textContent));
+//            $('#requests-avg').html(_getRequests(avgreq.toString()));
+
+
+            // all time averages
+            var avgbytes = new Number(data["averages"]["s_bodybytes"]); 
+            $('#traffic-avg').html(avgbytes.toString()); 
+
+            var avgreqs = new Number(data["averages"]["client_req"]);
+            //#$('#requests-avg').text(avgreqs.toFixed(0)); 
+            $('#requests-avg').text(_getRequests(avgreqs.toString())); 
+
+
+            // 5 second averages
+            var avg5sbytes = new Number((curr["s_bodybytes"] - old["s_bodybytes"]) / timediff);
+            $('#traffic-avg-5s').html(avg5sbytes.toFixed(0));
+
+            var avg5sreqs = new Number((curr["client_req"] - old["client_req"]) / timediff);
+            $('#requests-avg-5s').html(avg5sreqs.toFixed(1));
+
+            // total numbers
             $('#requests-total').html(curr["client_req"]);
-            $('#traffic-total').html(curr["s_bodybytes"] + " bytes" );
-            var avgbytes = (curr["s_bodybytes"] - old["s_bodybytes"]) / timediff;
-            $('#traffic-avg').html(avgbytes.toFixed(1) + " [byte/s]");
-            //$('#requests-total').html($sc[3].textContent.replace(/\s?([Mk])?req/, '$1').toUpperCase());
-/*
-            $('#traffic-total').html(_getTraffic($sc[4].textContent));
-            $('#traffic-avg-5s').html(_getTraffic($sc[8].textContent));
-*/
+            $('#traffic-total').html(curr["s_bodybytes"].toString());
+
             $('#last-update').text('Last updated ' + data["generated_iso"]);
         }
         else
@@ -79,7 +92,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 
         return traffic;
     }
-
+ 
     function _getUri(uriString) {
         var m = uriString.match(/^(\/[^ ]+)(?: \((.*)\))?$/);
 
@@ -93,20 +106,31 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 -->
 </script>
 
-<div id="topheadwrapper">
-<div id="logobox"><img src="images/vac_logo.png"></div> 
-<div id="slogan">Varnish Health</div> 
-<div id="topheadcontainer">
-<div id="navigation">
-    <div id="navbar">
-    <ul class="nav">
-        <li><a class="">Status</a></li>
-        <li> <a class="">About</a></li>
-    </ul>
-    </div>
-</div> 
+
+<div id="topbar" class="enclosed">
+<table width="100%">
+<tbody><tr>
+<td align="left">
+<div id=""><img src="images/vac_logo.png">VARNISH STATUS</div>
+</td>
+
+
+<td align="right">
+<div id="horizmenu">
+<a href="/munin/" title="graphs be here">graphs</a>
+
+| <a href="/hosts/" title="add/remove hosts">hosts</a>
+| <a href="/account/" title="billing++">account</a>
+| <a href="/help" title="feeble attempt at help page">help</a>
+| <a href="/adminpage">adminpage</a>
 </div>
+</td>
+</tr>
+</tbody></table>
 </div>
+
+| <div id="last-update"></div>
+
 
 <div id="wrapper">
     <div id="header" class="section">
@@ -122,11 +146,11 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
             <h3>5s sliding average</h3>
             <div class="contents">
                 <div class="valueContainer">
-                   <h4>Requests</h4>
+                   <h4>Requests [req/s]</h4>
                     <div id="requests-avg-5s"></div>
                 </div>
                 <div class="valueContainer">
-                    <h4>Traffic</h4>
+                    <h4>Traffic [B/s]</h4>
                     <div id="traffic-avg-5s"></div>
                 </div>
             </div>
@@ -137,11 +161,11 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 
             <div class="contents">
                 <div class="valueContainer">
-                    <h4>Requests</h4>
+                    <h4>Requests [req/s]</h4>
                     <div id="requests-avg"></div>
                 </div>
                 <div class="valueContainer">
-                    <h4>Traffic</h4>
+                    <h4>Traffic [B/s]</h4>
                     <div id="traffic-avg"></div>
                 </div>
             </div>
@@ -163,13 +187,40 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
             </div>
         </div>
 
+        <div class="innerSection">
+            <h3>From backends</h3>
+            <div class="contents">
+                <div class="valueContainer">
+                    <h4>Requests</h4>
+                    <div id="requests-backend">NaN</div>
+                </div>
+
+                <div class="valueContainer">
+                    <h4>Traffic</h4>
+                    <div id="traffic-backend">NaN</div>
+                </div>
+
+            </div>
+        </div>
+
         <div class="clearfix"></div>
 
     </div>
+    <div class="section">
+        <h3>Resources</h3>
+        <ul>
+            <li><a href="https://www.varnish-cache.org/releases">Varnish releases</a></li>
+            <li><a href="https://www.varnish-cache.org/docs/">Documentation</a></li>
+        </ul>
+    </div>
+
 </div>
 
 <div class="footerDiv footer">
-© Varnish Software - VMOD Status | <a href="/json">json source data</a></div>
+<hr>
+Status VMOD by <a href="http://varnish-software.com">Varnish Software</a> | 
+<a href="https://github.com/lkarsten/libvmod-status">source</a> on GitHub | 
+<a href="/json">json source data</a></div>
 
 </body>
 </html>

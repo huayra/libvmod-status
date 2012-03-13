@@ -88,3 +88,136 @@ border-top-width: 1px;
 border-top-color: #d7d7d7;
 font-size: 80%;
 }
+
+
+        body {
+            background: #b3c6d4;
+            padding: 20px;
+            font-family: "Century Gothic";
+            color: #4d4d4d;
+        }
+
+        #wrapper {
+            width: 820px;
+            margin: 0 auto;
+        }
+
+        #header {
+            position: relative;
+        }
+
+        #header h1,
+        .section h2,
+        .section h3 {
+            margin: 0;
+            padding: 0;
+            color: #162d50;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        #header h1{
+            border-bottom: solid 1px #eee;
+        }
+
+        #stats h2 {
+            margin-bottom: 10px;
+        }
+
+        #last-update { 
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        #server-name {
+            font-weight: bold;
+            font-size: 26px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+        }
+
+        .innerSection {
+            float: left;
+        }
+
+        .clearfix { clear: both; }
+
+        .valueContainer h4 {
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .valueContainer {
+            text-align: center;
+            background: #f2f2f2;
+            padding: 10px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            float: left;
+            margin-right: 10px;
+            width: 100px;
+        }
+
+        .valueContainer div {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        #connectionsTable {
+            width: 100%;
+            font-family: verdana, arial, helvetica, sans-serif;
+            font-size: x-small;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #connectionsTable tr th {
+            background-color: #003366;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: left;
+            padding: 0.5em;
+            border-left: 1px dotted #cccccc;
+            margin: 0;
+        }
+
+        #connectionsTable th:first-child {
+            border-left: 0;
+        }
+
+        #connectionsTable tr th:hover {
+            background-color: #2d5e92;
+        }
+
+        /* Table cells: general */
+
+        #connectionsTable td:first-child {
+            border-left: 0;
+        }
+
+        #connectionsTable tr td {
+            padding: 0.5em;
+            border-left: 1px dotted #cccccc;
+            margin: 0;
+        }
+
+        /* Optional alternating colours */
+
+        #connectionsTableEven td {
+            background-color: #fff;
+        }
+
+        #connectionsTableOdd td {
+            background-color: #eeeeee;
+        }

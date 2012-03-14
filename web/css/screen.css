@@ -91,14 +91,15 @@ font-size: 80%;
 
 
         body {
-            background: #b3c6d4;
-            padding: 20px;
-            font-family: "Century Gothic";
-            color: #4d4d4d;
+//            background: #b3c6d4;
+//            padding: 20px;
+//            font-family: "Century Gothic";
+//            color: #4d4d4d;
         }
 
         #wrapper {
-            width: 820px;
+//	    position: center
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -166,7 +167,7 @@ font-size: 80%;
             -webkit-border-radius: 3px;
             float: left;
             margin-right: 10px;
-            width: 100px;
+            width: 200px;
         }
 
         .valueContainer div {

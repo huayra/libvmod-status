@@ -15,20 +15,35 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
  </head>
 <body>
 <script type="text/javascript">
+
     function BeginPoll() {
          $.getJSON("/json", null, LoadData);
     }
 
+
     function LoadData(data, textStatus) {
         if(textStatus == "success") {
             
+	
             var curr = data["s"][0];
             var numentries = data["numentries"];
             var old = data["s"][numentries];
             var timediff = curr["generated"] - old["generated"];
 
+//	    var numdays = Math.floor(seconds / 86400);
+//	    var numhours = Math.floor((seconds % 86400) / 3600);
+//	    var numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
+//	    var numseconds = ((seconds % 86400) % 3600) % 60;	    
+//	    return numdays + " days " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
+
+
+
             $('#server-name').text(data["hostname"]);
-            $('#uptime').text('worker child up ' + curr["uptime"] + " seconds"); //  + " or " + old["uptime"][0]);
+            $('#uptime').text('Uptime of ' + curr["uptime"] + " seconds or " + old["uptime"]);// old["uptime"][d].textContext);
+//	      or " + old["uptime"][0]);
+//            $('#uptime').text('up ' + old["uptime"][3600].textContent);
+  
+
 
             // $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
             var avgreq   = (curr["client_req"] - old["client_req"]) / timediff;
@@ -63,6 +78,10 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         }
         setTimeout(BeginPoll, 5 * 1000);
     }
+
+
+
+
 
     function _getServerName(serverString) {
         return serverString.replace(/ \(\)$/, '');
@@ -102,6 +121,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         return uriString;
     }
 
+
     $(BeginPoll);
 -->
 </script>
@@ -111,7 +131,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 <table width="100%">
 <tbody><tr>
 <td align="left">
-<div id=""><img src="images/vac_logo.png">VARNISH STATUS</div>
+<div id=""><img src="images/vac_logo.png">VARNISH STATUS - varnish-2.1.2</div>
 </td>
 
 
@@ -129,12 +149,12 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 </tbody></table>
 </div>
 
-| <div id="last-update"></div>
+<div id="last-update"></div>
 
 
 <div id="wrapper">
     <div id="header" class="section">
-        <h1 id="docTitle">Server status</h1>
+        <h1 id="docTitle">Server status for</h1>
         <div id="last-update"></div>
         <div id="server-name">unknown server name</div>
         <div id="uptime">uptime not set</div>
@@ -217,7 +237,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 </div>
 
 <div class="footerDiv footer">
-<hr>
+<hr width=100% class="hr">
 Status VMOD by <a href="http://varnish-software.com">Varnish Software</a> | 
 <a href="https://github.com/lkarsten/libvmod-status">source</a> on GitHub | 
 <a href="/json">json source data</a></div>

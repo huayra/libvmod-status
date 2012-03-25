@@ -12,16 +12,46 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
     <link href="css/screen.css" media="screen" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="/flot/excanvas.js"></script>
+    <script language="javascript" type="text/javascript" src="/flot/jquery.flot.js"></script>
  </head>
 <body>
 <script type="text/javascript">
+   var hitRateData = [];
+   var requestRateData = [];
+   var plt = null;
+   var index = 0;
     function BeginPoll() {
          $.getJSON("/json", null, LoadData);
     }
 
     function LoadData(data, textStatus) {
         if(textStatus == "success") {
-            
+    
+plt=    $.plot($("#placeholder"),  [ 
+{
+   data: hitRateData, label:'Cache hit rate'
+}
+],{
+yaxis: {
+   ticks:10,
+   min: 0,
+   max:100
+},
+
+});
+plt2=    $.plot($("#placeholder2"),  [ 
+{
+   data: requestRateData, label:'Request / s'
+}
+
+],{
+yaxis: {
+   ticks:10,
+   min: 0,
+}
+});
+
             var curr = data["s"][0];
             var numentries = data["numentries"];
             var old = data["s"][numentries];
@@ -32,12 +62,14 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 
             // $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
             var avgreq   = (curr["client_req"] - old["client_req"]) / timediff;
+
 //            $('#requests-avg').html(_getRequests(avgreq.toString()));
 
 
+    
             // all time averages
-            var avgbytes = new Number(data["averages"]["s_bodybytes"]); 
-            $('#traffic-avg').html(avgbytes.toString()); 
+            var avgbytes = new Number(data["averages"]["s_bodybytes"]/1024/1024*8); 
+            $('#traffic-avg').html(avgbytes.toFixed(0)); 
 
             var avgreqs = new Number(data["averages"]["client_req"]);
             //#$('#requests-avg').text(avgreqs.toFixed(0)); 
@@ -50,11 +82,17 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 
             var avg5sreqs = new Number((curr["client_req"] - old["client_req"]) / timediff);
             $('#requests-avg-5s').html(avg5sreqs.toFixed(1));
-
+   requestRateData.push([index,avg5sreqs.toFixed(1)]);
             // total numbers
             $('#requests-total').html(curr["client_req"]);
             $('#traffic-total').html(curr["s_bodybytes"].toString());
 
+    var hitRate = new Number(((curr['cache_hit'] - old['cache_hit'])*100 / (curr['client_req'] - old['client_req'])));
+   hitRateData.push([index,hitRate.toFixed(1)]);
+index++;
+//    plt =  $.plot($("#placeholder"),hitRateData);
+
+    $('#traffic-hit-5s').html(hitRate.toFixed(1));
             $('#last-update').text('Last updated ' + data["generated_iso"]);
         }
         else
@@ -142,6 +180,10 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
                     <h4>Traffic [B/s]</h4>
                     <div id="traffic-avg-5s"></div>
                 </div>
+                <div class="valueContainer">
+                    <h4>Hit Rate</h4>
+                    <div id="traffic-hit-5s"></div>
+                </div>
             </div>
         </div>
 
@@ -154,7 +196,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
                     <div id="requests-avg"></div>
                 </div>
                 <div class="valueContainer">
-                    <h4>Traffic [B/s]</h4>
+                    <h4>Traffic [MB/s]</h4>
                     <div id="traffic-avg"></div>
                 </div>
             </div>
@@ -176,24 +218,9 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
             </div>
         </div>
 
-        <div class="innerSection">
-            <h3>From backends</h3>
-            <div class="contents">
-                <div class="valueContainer">
-                    <h4>Requests</h4>
-                    <div id="requests-backend">NaN</div>
-                </div>
-
-                <div class="valueContainer">
-                    <h4>Traffic</h4>
-                    <div id="traffic-backend">NaN</div>
-                </div>
-
-            </div>
-        </div>
-
         <div class="clearfix"></div>
-
+    <div id="placeholder" style="width:400px;height:300px;"></div>
+    <div id="placeholder2" style="width:400px;height:300px;"></div>
     </div>
     <div class="section">
         <h3>Resources</h3>

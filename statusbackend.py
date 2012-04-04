@@ -5,8 +5,14 @@
 #
 # Author: Lasse Karstensen <lasse.karstensen@gmail.com>
 
+# A list of IP addresses which is allowed to access this webserver.
+# Please note that they are string matched against the client ip, so no CIDR for you.
+IP_WHITELIST=["127.0.0.1", "::1",
+    "194.31.39.", "2a02:c0:1013:", # varnish software
+    ]
+
 import datetime, os, base64, random, time, select, popen2
-# try to support Python 2.5.
+# attempt at supporting Python 2.5.
 try:
     import json
 except ImportError:
@@ -14,6 +20,7 @@ except ImportError:
 
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 from pprint import pformat
+
 
 NUMSAMPLES=10
 pollstate = []
@@ -75,9 +82,25 @@ def getjson():
 class requesthandler(BaseHTTPRequestHandler):
     # http://docs.python.org/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler
     def do_GET(self): 
+        # simple authentication
+	allowed = False
+	clientip = self.client_address[0]
+	for allowedip in IP_WHITELIST:
+	    if clientip.startswith(allowedip):
+	        allowed = True
+		break
+        if not allowed:
+            self.send_response(403, "Forbidden")
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+	    self.wfile.write("%s is not allowed. See the IP_WHITELIST entry\n" % clientip)
+	    return
+
         # eat GET-args
 #        if "?" in self.path:
 #            self.path = self.path[0:self.path.index("?")]
+
+
         if self.path == "/":
             self.path = "index.html"
         if self.path == "/favicon.ico":

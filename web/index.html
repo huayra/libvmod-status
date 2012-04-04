@@ -114,9 +114,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
       $('#traffic-avg').html(avgbytes.toFixed(0));
 
       var avgreqs = new Number(data["averages"]["client_req"]);
-      //#$('#requests-avg').text(avgreqs.toFixed(0));
       $('#requests-avg').text(_getRequests(avgreqs.toString()));
-
 
       // 5 second averages
       var avg5sbytes = new Number((curr["s_bodybytes"] - old["s_bodybytes"]) / timediff / 1024 / 1024 * 8);
@@ -142,7 +140,6 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
     }
     setTimeout(BeginPoll, 5 * 1000);
   }
-
   function _getServerName(serverString)
   {
     return serverString.replace(/ \(\)$/, '');
@@ -198,20 +195,16 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
   $(BeginPoll);
 </script>
 
-<div id="topheadwrapper">
-  <div id="logobox"><img src="images/dots.png"></div>
-  <div id="slogan">Varnish Health</div>
-  <div id="topheadcontainer">
-    <div id="navigation">
-<!--      <div id="navbar">
-        <ul class="nav">
-          <li><a class="">Status</a></li>
-          <li><a class="">About</a></li>
-        </ul>
--->
-      </div>
-    </div>
-  </div>
+<div id="topbar" class="enclosed">
+  <table width="100%">
+  <tbody><tr>
+  <td align="left">
+    <div id="logobox"><img src="images/dots.png"></div>
+    <div id="horizmenu">VARNISH STATUS</div>
+  </td>
+  </tr>
+  </tbody>
+  </table>
 </div>
 
 <div id="wrapper">
@@ -220,6 +213,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
     <div id="last-update"></div>
     <div id="server-name">unknown server name</div>
     <div id="uptime">uptime not set</div>
+    <div id="vernumber">varnish-VERSION-NOT-SET</div>
   </div>
 
   <div id="stats" class="section">
@@ -255,7 +249,6 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         </div>
       </div>
     </div>
-
     <div class="innerSection">
       <h3>Total since Varnish restart</h3>
       <div class="contents">
@@ -268,7 +261,6 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
           <h4>Traffic</h4>
           <div id="traffic-total"></div>
         </div>
-
       </div>
     </div>
 

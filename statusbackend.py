@@ -87,6 +87,17 @@ def parse_backends(inputdict):
 		'port': port}
     return res
   
+def prepare_backendstring(backends):
+    "should be put into js real soon now."
+    if len(backends) == 0: 
+        return "<p>No backends seen in varnishstat</p>"
+    r = ["<ul>"]
+    for key, backend in backends.items():
+        s = "<li>%s (%s:%s)" % (backend["name"], backend["IPv4"], backend["port"])
+        r.append(s)
+    r.append("</ul>")
+    return "".join(r)
+
 
 def getjson():
     res = dict()
@@ -97,10 +108,8 @@ def getjson():
     res["numentries"] = len(pollstate) - 1
     res["version"] = varnish_version()
     res["backends"] = parse_backends(pollstate[0])
-    # VERY QUICK WIN.
-    #res["backends"] = dict()
-    res["backends_text"] = "<ul><li>" + "<li>".join(res["backends"].keys()) + "</ul>"
-    if len(res["backends"]) == 0: res["backends_text"] = "<p>No backends seen in varnishstat</p>"
+    # VERY QUICK WIN. NASTY
+    res["backends_text"] = prepare_backendstring(res["backends"])
     res["s"] = pollstate
     res["averages"] = quickaverages
     #res["responsetimes"] = resptimes() # cheat

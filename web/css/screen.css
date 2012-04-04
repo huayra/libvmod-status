@@ -53,17 +53,27 @@ width: 100%;
 border-width: 0px;
 margin-bottom: 2px;
 color: white;
-font-weight: bold;
+#font-weight: bold;
 background: #336fb6; 
 }
 #topbar a:visited { color: white; }
 #topbar a:link { color: white; }
 #topbar a:active { color: white; }
 
+#logobox {
+float: left;
+width: 30px;
+}
 
 #horizmenu {
+float: left;
+padding: 11px 27px 0 10px;
 color: white;
-float: right;
+text-transform: uppercase;
+font-weight: bold;
+}
+
+#vernumber {
 }
 
 #managecontent {
@@ -98,7 +108,7 @@ font-size: 80%;
         }
 
         #wrapper {
-//	    position: center
+//            position: center
             width: 100%;
             margin: 0 auto;
         }

@@ -5,7 +5,7 @@
 #
 # Author: Lasse Karstensen <lasse.karstensen@gmail.com>
 
-import datetime, os, base64, random, time, select
+import datetime, os, base64, random, time, select, popen2
 # try to support Python 2.5.
 try:
     import json
@@ -18,9 +18,9 @@ from pprint import pformat
 NUMSAMPLES=10
 pollstate = []
 quickaverages = dict() # numbers from the last varnishstat run
+stored_varnish_version = None
 
-def poll():
-    global pollstate, quickaverages
+def run_varnishstat():
     res = dict()
     # dont assume varnishstat with json support
     lines = os.popen("varnishstat -1").readlines()
@@ -33,11 +33,31 @@ def poll():
     now = datetime.datetime.now()
     res["generated_iso"] = now.isoformat()
     res["generated"] = now.strftime("%s")
+    return res
 
+def poll_varnishstat():
+    global pollstate, quickaverages
+    res = run_varnishstat()
     pollstate.insert(0, res)
     if len(pollstate) >= NUMSAMPLES:
         pollstate.pop()
     return True
+
+def varnish_version():
+    # avoid fork on every page lookup.
+    global stored_varnish_version
+    if stored_varnish_version:
+        return stored_varnish_version
+
+    # will probably not work if you are rolling your own varnishd.
+    (_out, _in, localstderr) = popen2.popen3("/usr/sbin/varnishd -V")
+    versionstring = localstderr.readline()
+    _x, majorversion, _x, gitid = versionstring.split()
+    stored_varnish_version = dict()
+    stored_varnish_version["varnishd"] = majorversion[1:] # remove (
+    stored_varnish_version["commit"] = gitid[:-1] # remove )
+    return stored_varnish_version
+
 
 def getjson():
     res = dict()
@@ -64,7 +84,19 @@ class requesthandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "image/x-icon")
             self.end_headers()
             self.wfile.write(favicon())
-        elif self.path == "/json":
+        elif self.path == "/version":
+            self.send_response(200, "OK")
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "maxage=3600")
+            self.end_headers()
+            self.wfile.write(json.dumps(varnish_version()))
+        elif self.path == "/varnishstat_realtime":
+            self.send_response(200, "OK")
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "max-age=10")
+            self.end_headers()
+            self.wfile.write(json.dumps(run_varnishstat()))
+        elif self.path == "/varnishstat_history":
             self.send_response(200, "OK")
             self.send_header("Content-Type", "application/json")
             self.send_header("Expires", "Fri, 30 Oct 1998 14:19:41 GMT")
@@ -128,7 +160,7 @@ def main():
        now = time.time()
        if now > (lastpoll + 2):
            lastpoll = now
-           poll()
+           poll_varnishstat()
        time.sleep(0.1)
 
 if __name__ == "__main__":

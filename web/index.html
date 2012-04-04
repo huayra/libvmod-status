@@ -205,6 +205,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
   <td align="left">
     <div id="logobox"><img src="images/dots.png"></div>
     <div id="horizmenu">VARNISH STATUS</div>
+    <div class="last-update" id="last-update"></div>
   </td>
   </tr>
   </tbody>
@@ -214,13 +215,14 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 <div id="wrapper">
   <div id="header" class="section">
     <h1 id="docTitle">Server status</h1>
-    <div id="last-update"></div>
+   <div id="innerhead">
     <div id="server-name">unknown server name</div>
-    <div id="uptime">uptime not set</div>
     <div id="vernumber">varnish-VERSION-NOT-SET</div>
-  </div>
-
+    <div id="uptime">uptime not set</div>
+   </div>
+  </div> 
   <div id="stats" class="section">
+    <div class="clearfix"></div>
     <div class="innerSection">
       <h3>Instantaneous traffic</h3>
       <div class="contents">
@@ -238,10 +240,9 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         </div>
       </div>
     </div>
-
+    <div class="clearfix"></div>
     <div class="innerSection">
       <h3>Average</h3>
-
       <div class="contents">
         <div class="valueContainer">
           <h4>Requests [req/s]</h4>
@@ -253,6 +254,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         </div>
       </div>
     </div>
+    <div class="clearfix"></div>
     <div class="innerSection">
       <h3>Total since Varnish restart</h3>
       <div class="contents">
@@ -267,7 +269,12 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         </div>
       </div>
     </div>
-
+    <div class="clearfix"></div>
+   <div class="contents">
+    <div class="innerSection">
+      <h3>Graphical Overview</h3>
+    </div>
+   <div class="section">
     <div class="clearfix"></div>
     <div class="innerSection">
       <div id="hitRatePlaceHolder" style="width:387px;height:200px;"></div>
@@ -287,19 +294,22 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
         <center>MB/s</center>
       </h4>
     </div>
+   </div>
+   </div>
     <div class="clearfix"></div>
   </div>
 
 </div>
 
-<div class="footerDiv footer">
-  <hr width="90%" align="left">
+<center><div class="footer">
+  <hr>
   Status VMOD by <a href="http://varnish-software.com">Varnish Software</a> |
   <a href="https://github.com/lkarsten/libvmod-status">source</a> on GitHub |
   <a href="/fullstatus">json source data</a> |
   <a href="https://www.varnish-cache.org/docs/">Varnish documentation</a> |
   <a href="https://www.varnish-cache.org/releases">Varnish releases</a>
 </div>
+</center>
 
 </body>
 </html>

@@ -12,6 +12,13 @@ body, h1, h2, h3, p, span, div {
 font-family: "vera sans","dejavu sans",helvetica,verdana,arial,sans-serif;
 }
 
+
+h1, h3 {
+//padding-bottom: 100px;
+//padding-top: 100px;
+}
+
+
 .important { 
 color: red;
 font-weight: bold;
@@ -40,18 +47,17 @@ background-color: #e8edff;
 
 .enclosed {
 background-color: LightCyan;
-padding: 10px;
+padding: 5px;
 border-style: solid;
 border-width: 1px;
 border-color: #d7d7d7;
-#box-shadow: #EEEEEE 3px 3px 10px;
 }
 
 #topbar {
 /*# text-decoration: underline; */
 width: 100%;
 border-width: 0px;
-margin-bottom: 2px;
+margin-bottom: 1px;
 color: white;
 #font-weight: bold;
 background: #336fb6; 
@@ -71,6 +77,11 @@ padding: 11px 27px 0 10px;
 color: white;
 text-transform: uppercase;
 font-weight: bold;
+}
+
+#last-update {
+float: right;
+color: white;
 }
 
 #vernumber {
@@ -108,8 +119,7 @@ font-size: 80%;
         }
 
         #wrapper {
-//            position: center
-            width: 100%;
+            width: 95%;
             margin: 0 auto;
         }
 
@@ -131,6 +141,16 @@ font-size: 80%;
         #header h1{
             border-bottom: solid 1px #eee;
         }
+
+        #innerhead {
+            text-align: left;
+            background: #E0E0E0;
+            padding: 10px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            float: left;
+            margin-right: 10px;
+            width: 300px;        }
 
         #stats h2 {
             margin-bottom: 10px;
@@ -159,6 +179,8 @@ font-size: 80%;
 
         .innerSection {
             float: left;
+            padding-bottom: 10px;
+            padding-top: 10px;
         }
 
         .clearfix { clear: both; }
@@ -171,7 +193,7 @@ font-size: 80%;
 
         .valueContainer {
             text-align: center;
-            background: #f2f2f2;
+            background: #E0E0E0;
             padding: 10px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;

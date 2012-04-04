@@ -11,7 +11,7 @@ IP_WHITELIST=["127.0.0.1", "::1",
     "194.31.39.", "2a02:c0:1013:", # varnish software
     ]
 
-import datetime, os, base64, random, time, select, popen2
+import datetime, os, base64, random, time, select, popen2, socket
 # attempt at supporting Python 2.5.
 try:
     import json
@@ -85,6 +85,9 @@ class requesthandler(BaseHTTPRequestHandler):
         # simple authentication
 	allowed = False
 	clientip = self.client_address[0]
+	# Filter off any IPv4-mapped info in the beginning of the string.
+	clientip = clientip.replace("::ffff:", "")
+
 	for allowedip in IP_WHITELIST:
 	    if clientip.startswith(allowedip):
 	        allowed = True
@@ -168,8 +171,19 @@ def hist():
                 buckets[i] = buckets[i] + 1
                 break
 
+class IPv6AlsoHTTPServer(HTTPServer):
+    def server_bind(self):
+        print dir(HTTPServer)
+	print HTTPServer.address_family
+	import socket
+	HTTPServer.socket_type = socket.AF_INET6
+        HTTPServer.server_bind(self)
+
 def main():
-    server_address = ('0.0.0.0', 5912)
+    # This is needed to make the TCPServer listen do AF_INET6 with mapped IPv4.
+    HTTPServer.address_family = socket.AF_INET6
+
+    server_address = ('', 5912)
     httpd = HTTPServer(server_address, requesthandler)
 
     pollobj = select.poll()

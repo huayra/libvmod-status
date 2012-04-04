@@ -97,6 +97,8 @@ def getjson():
     res["numentries"] = len(pollstate) - 1
     res["version"] = varnish_version()
     res["backends"] = parse_backends(pollstate[0])
+    # VERY QUICK WIN.
+    res["backends_text"] = "<li>" + "<li>".join(res["backends"].keys())
     res["s"] = pollstate
     res["averages"] = quickaverages
     #res["responsetimes"] = resptimes() # cheat

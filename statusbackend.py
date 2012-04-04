@@ -66,6 +66,28 @@ def varnish_version():
     return stored_varnish_version
 
 
+def parse_backends(inputdict):
+    """
+        Read varnistat output and pull out a list of backends. Should be done in JS, but python
+	is so much easier.
+    """
+    res = dict()
+    for key in inputdict.keys():
+        if not key.startswith("VBE"):
+	    continue
+	name, infostring = key[4:].split("(", 1)
+	v4,v6,port = infostring.split(",", 2)
+	port = port.split(")", 1)[0]
+	if len(v6) == 0: v6 = None
+	if len(v4) == 0: v4 = None
+	res[name] = {'name': name,
+		'keyname': ",".join(key.split(".")[:-1]),
+		'IPv4': v4,
+		'IPv6': v6,
+		'port': port}
+    return res
+  
+
 def getjson():
     res = dict()
     now = datetime.datetime.now()
@@ -74,6 +96,7 @@ def getjson():
     res["hostname"] = os.uname()[1]
     res["numentries"] = len(pollstate) - 1
     res["version"] = varnish_version()
+    res["backends"] = parse_backends(pollstate[0])
     res["s"] = pollstate
     res["averages"] = quickaverages
     #res["responsetimes"] = resptimes() # cheat

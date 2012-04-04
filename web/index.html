@@ -28,7 +28,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
   var index = 0;
   function BeginPoll()
   {
-    $.getJSON("/json", null, LoadData);
+    $.getJSON("/varnishstat_history", null, LoadData);
   }
 
   function LoadData(data, textStatus)
@@ -300,7 +300,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
   <hr width="90%" align="left">
   Status VMOD by <a href="http://varnish-software.com">Varnish Software</a> |
   <a href="https://github.com/lkarsten/libvmod-status">source</a> on GitHub |
-  <a href="/json">json source data</a> |
+  <a href="/varnishstat_history">json source data</a> |
   <a href="https://www.varnish-cache.org/docs/">Varnish documentation</a> |
   <a href="https://www.varnish-cache.org/releases">Varnish releases</a>
 </div>

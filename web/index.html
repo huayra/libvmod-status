@@ -140,7 +140,7 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
       $('#vernumber').text(versionarray["varnishd"]);
       //backends hack. Don'ẗ hate the player...
       backends = data["backends_text"];
-      $('#backends').text(backends);
+      $('#backends').html(backends);
     } else
     {
       alert('Failed loading data');

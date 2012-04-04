@@ -87,6 +87,11 @@ color: white;
 #vernumber {
 }
 
+#backends {
+font-size: 12px;
+font-weight: none;
+}
+
 #managecontent {
 margin-left: 4px; 
 }

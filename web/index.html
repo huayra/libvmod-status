@@ -2,214 +2,311 @@
 <!--
 Varnish health status page.
 
-Contains traces of code from Pretty automatically updating lighttpd server status by Markus Olsson 
+Contains traces of code from Pretty automatically updating lighttpd server status by Markus Olsson
 http://www.freakcode.com/projects/pretty-lighty-status-page
 -->
 <html>
- <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Varnish Cache Health Status Page</title>
-    <link href="css/screen.css" media="screen" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
- </head>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Varnish Cache Health Status Page</title>
+  <link href="css/screen.css" media="screen" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <script language="javascript" type="text/javascript"
+          src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script language="javascript" type="text/javascript" src="/flot/excanvas.js"></script>
+  <script language="javascript" type="text/javascript" src="/flot/jquery.flot.js"></script>
+</head>
 <body>
 <script type="text/javascript">
-    function BeginPoll() {
-         $.getJSON("/json", null, LoadData);
+  var hitRateData = [];
+  var requestRateData = [];
+  var traficData = [];
+  var cacheHitRateGraph = null;
+  var requestPerSecondGraph = null;
+  var traficGraph = null;
+  var index = 0;
+  function BeginPoll()
+  {
+    $.getJSON("/json", null, LoadData);
+  }
+
+  function LoadData(data, textStatus)
+  {
+    if (textStatus == "success")
+    {
+      if (cacheHitRateGraph == null)
+      {
+        cacheHitRateGraph = $.plot($("#hitRatePlaceHolder"), [
+          {
+            data:hitRateData
+          }
+        ], {
+          xaxis:{ show:false },
+          yaxis:{
+            ticks:10,
+            min:0,
+            max:100
+          }
+
+        });
+      } else
+      {
+        cacheHitRateGraph.setData([hitRateData]);
+        cacheHitRateGraph.setupGrid();
+        cacheHitRateGraph.draw();
+      }
+      if (traficGraph == null)
+      {
+        traficGraph = $.plot($("#traficHolder"), [
+          {
+            data:traficData
+          }
+        ], {
+          xaxis:{ show:false },
+          yaxis:{
+            ticks:10,
+            min:0,
+            max:100
+          }
+
+        });
+      } else
+      {
+        traficGraph.setData([traficData]);
+        traficGraph.setupGrid();
+        traficGraph.draw();
+      }
+
+
+      if (requestPerSecondGraph == null)
+      {
+        requestPerSecondGraph = $.plot($("#requestPlaceHolder"), [
+          {
+            data:requestRateData
+          }
+
+        ], {
+          xaxis:{ show:false },
+          yaxis:{
+            ticks:10,
+            min:0
+          }
+        });
+      } else
+      {
+        requestPerSecondGraph.setData([requestRateData]);
+        requestPerSecondGraph.setupGrid();
+        requestPerSecondGraph.draw();
+      }
+      var curr = data["s"][0];
+      var numentries = data["numentries"];
+      var old = data["s"][numentries];
+      var timediff = curr["generated"] - old["generated"];
+
+      $('#server-name').text(data["hostname"]);
+      $('#uptime').text('worker child up ' + curr["uptime"] + " seconds"); //  + " or " + old["uptime"][0]);
+
+      // $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
+      var avgreq = (curr["client_req"] - old["client_req"]) / timediff;
+      // all time averages
+      var avgbytes = new Number(data["averages"]["s_bodybytes"] / 1024 / 1024 * 8);
+      $('#traffic-avg').html(avgbytes.toFixed(0));
+
+      var avgreqs = new Number(data["averages"]["client_req"]);
+      //#$('#requests-avg').text(avgreqs.toFixed(0));
+      $('#requests-avg').text(_getRequests(avgreqs.toString()));
+
+
+      // 5 second averages
+      var avg5sbytes = new Number((curr["s_bodybytes"] - old["s_bodybytes"]) / timediff / 1024 / 1024 * 8);
+      traficData.push([index,avg5sbytes]);
+      $('#traffic-avg-5s').html(avg5sbytes.toFixed(0));
+
+      var avg5sreqs = new Number((curr["client_req"] - old["client_req"]) / timediff);
+      $('#requests-avg-5s').html(avg5sreqs.toFixed(1));
+      requestRateData.push([index, avg5sreqs.toFixed(1)]);
+      // total numbers
+      $('#requests-total').html(curr["client_req"]);
+      $('#traffic-total').html(curr["s_bodybytes"].toString());
+
+      var hitRate = new Number(((curr['cache_hit'] - old['cache_hit']) * 100 / (curr['client_req'] - old['client_req'])));
+      hitRateData.push([index, hitRate.toFixed(1)]);
+      index++;
+
+      $('#traffic-hit-5s').html(hitRate.toFixed(1));
+      $('#last-update').text('Last updated ' + data["generated_iso"]);
+    } else
+    {
+      alert('Failed loading data');
+    }
+    setTimeout(BeginPoll, 5 * 1000);
+  }
+
+  function _getServerName(serverString)
+  {
+    return serverString.replace(/ \(\)$/, '');
+  }
+
+  function _getRequests(requestString)
+  {
+    return requestString.replace(/\s*req/, '');
+  }
+
+  function _getTraffic(trafficString)
+  {
+    var m = trafficString.match(/(\d+)(\.\d+)? ([kMGTPEZY]?) ?byte(\/s)?/);
+
+    if (m == null)
+    {
+      return trafficString;
     }
 
-    function LoadData(data, textStatus) {
-        if(textStatus == "success") {
-            
-            var curr = data["s"][0];
-            var numentries = data["numentries"];
-            var old = data["s"][numentries];
-            var timediff = curr["generated"] - old["generated"];
+    var integer = m[1];
+    var fraction = m[2];
+    var suffix = m[3];
 
-            $('#server-name').text(data["hostname"]);
-            $('#uptime').text('worker child up ' + curr["uptime"] + " seconds"); //  + " or " + old["uptime"][0]);
+    var traffic = integer;
 
-            // $('#requests-avg-5s').html(_getRequests($sc[7].textContent));
-            var avgreq   = (curr["client_req"] - old["client_req"]) / timediff;
-//            $('#requests-avg').html(_getRequests(avgreq.toString()));
-
-
-            // all time averages
-            var avgbytes = new Number(data["averages"]["s_bodybytes"]); 
-            $('#traffic-avg').html(avgbytes.toString()); 
-
-            var avgreqs = new Number(data["averages"]["client_req"]);
-            //#$('#requests-avg').text(avgreqs.toFixed(0)); 
-            $('#requests-avg').text(_getRequests(avgreqs.toString())); 
-
-
-            // 5 second averages
-            var avg5sbytes = new Number((curr["s_bodybytes"] - old["s_bodybytes"]) / timediff);
-            $('#traffic-avg-5s').html(avg5sbytes.toFixed(0));
-
-            var avg5sreqs = new Number((curr["client_req"] - old["client_req"]) / timediff);
-            $('#requests-avg-5s').html(avg5sreqs.toFixed(1));
-
-            // total numbers
-            $('#requests-total').html(curr["client_req"]);
-            $('#traffic-total').html(curr["s_bodybytes"].toString());
-
-            $('#last-update').text('Last updated ' + data["generated_iso"]);
-        }
-        else
-        {
-            alert('Failed loading data');
-        }
-        setTimeout(BeginPoll, 5 * 1000);
+    if (suffix.match(/G|T|P|E|Z|Y/) && integer < 100)
+    {
+      traffic += fraction;
     }
 
-    function _getServerName(serverString) {
-        return serverString.replace(/ \(\)$/, '');
+    traffic += suffix + "b";
+
+    if (m[4])
+    {
+      traffic += "/s";
     }
 
-    function _getRequests(requestString) {
-        return requestString.replace(/\s*req/, '');
-    }
-    
-    function _getTraffic(trafficString) {
-        var m = trafficString.match(/(\d+)(\.\d+)? ([kMGTPEZY]?) ?byte(\/s)?/);
+    return traffic;
+  }
 
-        if(m == null) return trafficString;
+  function _getUri(uriString)
+  {
+    var m = uriString.match(/^(\/[^ ]+)(?: \((.*)\))?$/);
 
-        var integer = m[1];
-        var fraction = m[2];
-        var suffix = m[3];
-
-        var traffic = integer;
-
-        if(suffix.match(/G|T|P|E|Z|Y/) && integer < 100)
-            traffic += fraction;
-        
-        traffic += suffix + "b";
-
-        if(m[4]) traffic += "/s";
-
-        return traffic;
+    if (m != null && m[2] && m[1] == m[2])
+    {
+      return m[1];
     }
 
-    function _getUri(uriString) {
-        var m = uriString.match(/^(\/[^ ]+)(?: \((.*)\))?$/);
+    return uriString;
+  }
 
-        if(m != null && m[2] && m[1] == m[2])
-            return m[1];
-
-        return uriString;
-    }
-
-    $(BeginPoll);
--->
+  $(BeginPoll);
 </script>
 
 <div id="topheadwrapper">
-<div id="logobox"><img src="images/vac_logo.png"></div> 
-<div id="slogan">Varnish Health</div> 
-<div id="topheadcontainer">
-<div id="navigation">
-    <div id="navbar">
-    <ul class="nav">
-        <li><a class="">Status</a></li>
-        <li> <a class="">About</a></li>
-    </ul>
+  <div id="logobox"><img src="images/vac_logo.png"></div>
+  <div id="slogan">Varnish Health</div>
+  <div id="topheadcontainer">
+    <div id="navigation">
+      <div id="navbar">
+        <ul class="nav">
+          <li><a class="">Status</a></li>
+          <li><a class="">About</a></li>
+        </ul>
+      </div>
     </div>
-</div> 
-</div>
+  </div>
 </div>
 
 <div id="wrapper">
-    <div id="header" class="section">
-        <h1 id="docTitle">Server status</h1>
-        <div id="last-update"></div>
-        <div id="server-name">unknown server name</div>
-        <div id="uptime">uptime not set</div>
+  <div id="header" class="section">
+    <h1 id="docTitle">Server status</h1>
+    <div id="last-update"></div>
+    <div id="server-name">unknown server name</div>
+    <div id="uptime">uptime not set</div>
+  </div>
+
+  <div id="stats" class="section">
+    <h2>Connection statistics</h2>
+    <div class="innerSection">
+      <h3>5s sliding average</h3>
+      <div class="contents">
+        <div class="valueContainer">
+          <h4>Requests [req/s]</h4>
+          <div id="requests-avg-5s"></div>
+        </div>
+        <div class="valueContainer">
+          <h4>Traffic [MB/s]</h4>
+          <div id="traffic-avg-5s"></div>
+        </div>
+        <div class="valueContainer">
+          <h4>Hit Rate [%]</h4>
+          <div id="traffic-hit-5s"></div>
+        </div>
+      </div>
     </div>
 
-    <div id="stats" class="section">
-        <h2>Connection statistics</h2>
-        <div class="innerSection">
-            <h3>5s sliding average</h3>
-            <div class="contents">
-                <div class="valueContainer">
-                   <h4>Requests [req/s]</h4>
-                    <div id="requests-avg-5s"></div>
-                </div>
-                <div class="valueContainer">
-                    <h4>Traffic [B/s]</h4>
-                    <div id="traffic-avg-5s"></div>
-                </div>
-            </div>
+    <div class="innerSection">
+      <h3>average</h3>
+
+      <div class="contents">
+        <div class="valueContainer">
+          <h4>Requests [req/s]</h4>
+          <div id="requests-avg"></div>
         </div>
-
-        <div class="innerSection">
-            <h3>average</h3>
-
-            <div class="contents">
-                <div class="valueContainer">
-                    <h4>Requests [req/s]</h4>
-                    <div id="requests-avg"></div>
-                </div>
-                <div class="valueContainer">
-                    <h4>Traffic [B/s]</h4>
-                    <div id="traffic-avg"></div>
-                </div>
-            </div>
+        <div class="valueContainer">
+          <h4>Traffic [MB/s]</h4>
+          <div id="traffic-avg"></div>
         </div>
-
-        <div class="innerSection">
-            <h3>total</h3>
-            <div class="contents">
-                <div class="valueContainer">
-                    <h4>Requests</h4>
-                    <div id="requests-total"></div>
-                </div>
-
-                <div class="valueContainer">
-                    <h4>Traffic</h4>
-                    <div id="traffic-total"></div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="innerSection">
-            <h3>From backends</h3>
-            <div class="contents">
-                <div class="valueContainer">
-                    <h4>Requests</h4>
-                    <div id="requests-backend">NaN</div>
-                </div>
-
-                <div class="valueContainer">
-                    <h4>Traffic</h4>
-                    <div id="traffic-backend">NaN</div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
+      </div>
     </div>
-    <div class="section">
-        <h3>Resources</h3>
-        <ul>
-            <li><a href="https://www.varnish-cache.org/releases">Varnish releases</a></li>
-            <li><a href="https://www.varnish-cache.org/docs/">Documentation</a></li>
-        </ul>
+
+    <div class="innerSection">
+      <h3>total</h3>
+      <div class="contents">
+        <div class="valueContainer">
+          <h4>Requests</h4>
+          <div id="requests-total"></div>
+        </div>
+
+        <div class="valueContainer">
+          <h4>Traffic</h4>
+          <div id="traffic-total"></div>
+        </div>
+
+      </div>
     </div>
+
+    <div class="clearfix"></div>
+    <div class="innerSection">
+      <div id="hitRatePlaceHolder" style="width:387px;height:200px;"></div>
+      <h4>
+        <center>Hit Rate</center>
+      </h4>
+    </div>
+    <div class="innerSection">
+      <div id="requestPlaceHolder" style="width:387px;height:200px;"></div>
+      <h4>
+        <center>Rq/s</center>
+      </h4>
+    </div>
+    <div class="innerSection">
+      <div id="traficHolder" style="width:387px;height:200px;"></div>
+      <h4>
+        <center>MB/s</center>
+      </h4>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="section">
+    <h3>Resources</h3>
+    <ul>
+      <li><a href="https://www.varnish-cache.org/releases">Varnish releases</a></li>
+      <li><a href="https://www.varnish-cache.org/docs/">Documentation</a></li>
+    </ul>
+  </div>
 
 </div>
 
 <div class="footerDiv footer">
-<hr>
-Status VMOD by <a href="http://varnish-software.com">Varnish Software</a> | 
-<a href="https://github.com/lkarsten/libvmod-status">source</a> on GitHub | 
-<a href="/json">json source data</a></div>
+  <hr>
+  Status VMOD by <a href="http://varnish-software.com">Varnish Software</a> |
+  <a href="https://github.com/lkarsten/libvmod-status">source</a> on GitHub |
+  <a href="/json">json source data</a></div>
 
 </body>
 </html>

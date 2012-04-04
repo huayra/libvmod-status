@@ -89,7 +89,8 @@ color: white;
 
 #backends {
 font-size: 12px;
-font-weight: none;
+font-weight: normal;
+text-align: left;
 }
 
 #managecontent {

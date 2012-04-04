@@ -134,6 +134,10 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
 
       $('#traffic-hit-5s').html(hitRate.toFixed(1));
       $('#last-update').text('Last updated ' + data["generated_iso"]);
+
+      // don't care, lets just update this each time even if it does change.. :)
+      versionarray = data["version"];
+      $('#vernumber').text(versionarray["varnishd"]);
     } else
     {
       alert('Failed loading data');

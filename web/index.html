@@ -138,6 +138,9 @@ http://www.freakcode.com/projects/pretty-lighty-status-page
       // don't care, lets just update this each time even if it does change.. :)
       versionarray = data["version"];
       $('#vernumber').text(versionarray["varnishd"]);
+      //backends hack. Don'ẗ hate the player...
+      backends = data["backends_text"];
+      $('#backends').text(backends);
     } else
     {
       alert('Failed loading data');

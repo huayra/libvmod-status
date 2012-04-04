@@ -66,6 +66,7 @@ def getjson():
     res["generated"] = now.strftime("%s")
     res["hostname"] = os.uname()[1]
     res["numentries"] = len(pollstate) - 1
+    res["version"] = varnish_version()
     res["s"] = pollstate
     res["averages"] = quickaverages
     #res["responsetimes"] = resptimes() # cheat
@@ -84,6 +85,7 @@ class requesthandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "image/x-icon")
             self.end_headers()
             self.wfile.write(favicon())
+	# either this, or pull from the dict in /fullstatus
         elif self.path == "/version":
             self.send_response(200, "OK")
             self.send_header("Content-Type", "application/json")
@@ -96,7 +98,7 @@ class requesthandler(BaseHTTPRequestHandler):
             self.send_header("Cache-Control", "max-age=10")
             self.end_headers()
             self.wfile.write(json.dumps(run_varnishstat()))
-        elif self.path == "/varnishstat_history":
+        elif self.path == "/fullstatus":
             self.send_response(200, "OK")
             self.send_header("Content-Type", "application/json")
             self.send_header("Expires", "Fri, 30 Oct 1998 14:19:41 GMT")

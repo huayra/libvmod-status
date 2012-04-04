@@ -12,6 +12,13 @@ body, h1, h2, h3, p, span, div {
 font-family: "vera sans","dejavu sans",helvetica,verdana,arial,sans-serif;
 }
 
+
+h1, h3 {
+//padding-bottom: 100px;
+//padding-top: 100px;
+}
+
+
 .important { 
 color: red;
 font-weight: bold;
@@ -135,6 +142,16 @@ font-size: 80%;
             border-bottom: solid 1px #eee;
         }
 
+        #innerhead {
+            text-align: left;
+            background: #E0E0E0;
+            padding: 10px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            float: left;
+            margin-right: 10px;
+            width: 300px;        }
+
         #stats h2 {
             margin-bottom: 10px;
         }
@@ -162,6 +179,8 @@ font-size: 80%;
 
         .innerSection {
             float: left;
+            padding-bottom: 10px;
+            padding-top: 10px;
         }
 
         .clearfix { clear: both; }
@@ -174,7 +193,7 @@ font-size: 80%;
 
         .valueContainer {
             text-align: center;
-            background: #f2f2f2;
+            background: #E0E0E0;
             padding: 10px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;

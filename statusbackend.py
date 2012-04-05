@@ -9,6 +9,7 @@
 # Please note that they are string matched against the client ip, so no CIDR for you.
 IP_WHITELIST=["127.0.0.1", "::1",
     "194.31.39.", "2a02:c0:1013:", # varnish software
+    "109.179.", "84.208.107." #telenor mobil og get IP4
     ]
 
 import datetime, os, base64, random, time, select, popen2, socket

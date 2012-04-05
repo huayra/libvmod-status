@@ -91,8 +91,7 @@ def parse_backends(inputdict):
 def prepare_backendstring(backends):
     "should be put into js real soon now."
     if len(backends) == 0: 
-        return "<li>No backends seen in varnishstat</li>"
-        return "<li>(Expected behaviour in Varnish 2.x)</li>"
+        return "<li>No backends seen in varnishstat</li><li>(Expected behaviour in Varnish 2.x)</li>"
     r = ["<ul>"]
     for key, backend in backends.items():
         s = "<li>%s (%s:%s)" % (backend["name"], backend["IPv4"], backend["port"])

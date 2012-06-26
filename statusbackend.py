@@ -8,7 +8,7 @@
 # A list of IP addresses which is allowed to access this webserver.
 # Please note that they are string matched against the client ip, so no CIDR for you.
 IP_WHITELIST=["127.0.0.1", "::1",
-    "194.31.39.", "2a02:c0:1013:", # varnish software
+    "194.31.39.", "2a02:c0:1013:", "2a02:c0:1002", "87.238.44.", # varnish software
     "109.179.", "84.208.107." #telenor mobil og get IP4
     ]
 
